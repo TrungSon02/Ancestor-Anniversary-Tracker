@@ -20,10 +20,11 @@ lunar = LunarSolar.solar_to_lunar(solar_day,solar_month,solar_year)
 lunar_day = lunar[0]
 lunar_month = lunar[1]
 
-
+email_sent = False
 data = pandas.read_csv("ancestor.csv")
 for index,row in data.iterrows():
     if lunar_day == row.day and lunar_month == row.month:
+        email_sent = True
         chosen_name = row.person
 
         with smtplib.SMTP("smtp.gmail.com") as connection:
@@ -37,3 +38,9 @@ for index,row in data.iterrows():
                 connection.sendmail(from_addr=SENDER, to_addrs=RECEIVER1, msg=f"Subject:Thong Bao Ngay Gio Cu {chosen_name}\n\nHom Nay La Ngay GIo Cua Cu {chosen_name}. \nMong Moi Nguoi Kip Chuan Bi Day Du!")
                 connection.sendmail(from_addr=SENDER, to_addrs=RECEIVER2,
                                     msg=f"Subject:Thong Bao Ngay Gio Cu {chosen_name}\n\nHom Nay La Ngay Gio Cua Cu {chosen_name}. \nMong Moi Nguoi Kip Chuan Bi Day Du!")
+
+
+if email_sent:
+    print("Email sent")
+else:
+    print("No email sent")
